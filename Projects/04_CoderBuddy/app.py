@@ -50,7 +50,7 @@ colA, colB = st.columns([1,1])
 with colA:
     run_btn = st.button("Run CoderBuddy 🚀")
 with colB:
-    gen_btn = st.button("Generate Project ZIP 📦", disabled=True)
+    gen_btn = st.button("Generate Project ZIP 📦", disabled=True, key="gen_zip_disabled")
 
 if run_btn and user_prompt.strip():
     st.session_state.memory.save_context({"human": user_prompt}, {"ai": "Processing..."})
@@ -88,17 +88,30 @@ if last:
         st.json(last["architecture"])
 
     if last.get("code_artifacts"):
-        st.subheader("5️⃣ Generated files")
-        for a in last["code_artifacts"][:12]:
-            st.markdown(f"**{a['path']}**")
-            st.code(a["content"][:2000], language="markdown")
-        st.session_state["zip_ready"] = True
-        gen_btn = st.button("Generate Project ZIP 📦", type="secondary")
+        st.subheader("5️⃣ Preview")
+        artifacts = last["code_artifacts"]
+        # Try to render a helpful preview if possible
+        readme = next((a for a in artifacts if a.get("path"," ").lower().endswith("readme.md")), None)
+        html_page = next((a for a in artifacts if a.get("path"," ").lower().endswith(".html")), None)
+        if readme:
+            st.markdown(readme["content"])
+        elif html_page:
+            st.components.v1.html(html_page["content"], height=650, scrolling=True)
+        else:
+            st.success("Project generated. Download the ZIP to view the full app.")
 
-    if gen_btn and last.get("code_artifacts"):
-        zip_path = write_project(last["code_artifacts"], base_dir="generated_project")
+        with st.expander("Files included"):
+            for a in artifacts[:50]:
+                st.markdown(f"- **{a['path']}**")
+
+        zip_path = write_project(artifacts, base_dir="generated_project")
         with open(zip_path, "rb") as f:
-            st.download_button("Download ZIP", f, file_name="coderbuddy_project.zip", mime="application/zip")
+            st.download_button(
+                "Download Project ZIP 📦",
+                f,
+                file_name="coderbuddy_project.zip",
+                mime="application/zip",
+            )
 
 st.divider()
 st.subheader("Conversation Memory")
