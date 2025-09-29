@@ -1,0 +1,28 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.so
+*.egg-info/
+*.eggs/
+
+# Environment
+.env
+.venv/
+.env.local
+.env.*.local
+
+# IDE/editor
+.vscode/
+.idea/
+*.swp
+
+# Streamlit cache
+.streamlit/
+
+# OS files
+.DS_Store
+
+# Output artifacts
+generated_project/
+generated_project.zip
