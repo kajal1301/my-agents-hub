@@ -142,16 +142,3 @@ OPENAI_API_KEY=your_openai_api_key_here
 ## 🤝 Contributing
 
 This is a personal portfolio project showcasing AI applications. Each project demonstrates different aspects of AI implementation and can serve as learning examples.
-
-## 📝 License
-
-MIT License - Feel free to use these projects for learning and inspiration.
-
-## 🔗 Connect
-
-- LinkedIn: [Your LinkedIn Profile]
-- Portfolio: [Your Portfolio Website]
-
----
-
-**Note**: This hub is continuously evolving with new projects and improvements. Check back regularly for updates!
