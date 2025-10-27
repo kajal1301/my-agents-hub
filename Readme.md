@@ -130,15 +130,6 @@ GROQ_API_KEY=your_groq_api_key_here
 OPENAI_API_KEY=your_openai_api_key_here
 ```
 
-## 📊 Project Status
-
-| Project | Status | Description |
-|---------|--------|-------------|
-| Invoice Auditor | 🚧 Development | Document processing and auditing |
-| Text to SQL | 🚧 Development | Natural language to SQL conversion |
-| Resume Matcher | 🚧 Development | Resume analysis and matching |
-| CoderBuddy | ✅ Complete | AI-powered app builder |
-
 ## 🤝 Contributing
 
 This is a personal portfolio project showcasing AI applications. Each project demonstrates different aspects of AI implementation and can serve as learning examples.
