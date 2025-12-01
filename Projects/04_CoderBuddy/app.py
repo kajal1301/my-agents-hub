@@ -131,8 +131,9 @@ if last:
         st.subheader("2️⃣ Clarifying questions")
         with st.form("answers_form"):
             new_answers = {}
-            for q in qs:
-                new_answers[q] = st.text_area(q, height=80)
+            for i, q in enumerate(qs):
+                st.write(f"**Q{i+1}:** {q}")
+                new_answers[q] = st.text_area(f"Answer {i+1}", height=60, key=f"answer_{i}")
             submitted = st.form_submit_button("Save Answers")
             if submitted:
                 st.session_state.answers.update({k:v for k,v in new_answers.items() if v})

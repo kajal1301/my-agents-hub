@@ -6,98 +6,153 @@ Built with Streamlit, LangGraph, LangChain, and Groq (model: `openai/gpt-oss-120
 
 ---
 
-## Features
-- Prompt verification to ensure it’s an engineering/app-building task
-- Clarifying questions with short-term conversation memory
-- Multi-agent flow: Verifier → Requirements → Planner → Architect
-- Generates code artifacts and offers a one-click ZIP download
-- Preview section (renders README or HTML when available)
+## ✨ Features
+
+- **Smart Prompt Verification** - Ensures your input is an engineering/app-building task
+- **Interactive Q&A** - Clean, numbered clarifying questions with organized answer fields
+- **Multi-Agent Workflow** - Verifier → Requirements → Planner → Architect → Coder
+- **Code Generation** - Generates complete, runnable projects with all necessary files
+- **One-Click Download** - Download your generated project as a ZIP file
+- **Live Preview** - Renders README or HTML files directly in the interface
+- **Conversation Memory** - Maintains context across interactions
+- **Memory Management** - Clear conversation history with one click
 
 ---
 
-## Requirements
-- Python 3.9+
-- A Groq API key (for model access)
+## 📋 Requirements
+
+- **Python 3.10+** (recommended)
+- **Groq API Key** - Get your free API key from [console.groq.com](https://console.groq.com)
+- **Internet Connection** - Required for AI model access
 
 ---
 
-## Setup
+## 🚀 Quick Setup
+
+### 1. Clone and Navigate
 ```bash
-# from the project root
 cd Projects/04_CoderBuddy
-
-# (optional but recommended) create a virtual environment
-python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
-
-# install dependencies
-pip install -r requirements.txt
-
-# set your environment (create .env if needed)
-# GROQ_API_KEY=your_key_here
 ```
 
----
+### 2. Install Dependencies
+```bash
+# Install all required packages
+pip install -r requirements.txt
+```
 
-## Run
+**Note**: If you encounter `ModuleNotFoundError`, ensure you're using the correct Python environment. The app requires Python 3.10+ with all dependencies installed.
+
+### 3. Configure API Key
+Create a `.env` file in the project directory:
+```bash
+echo "GROQ_API_KEY=your_actual_groq_api_key_here" > .env
+```
+
+Replace `your_actual_groq_api_key_here` with your real Groq API key.
+
+### 4. Run the Application
 ```bash
 streamlit run app.py
 ```
 
-Open the Local URL shown in the terminal (usually http://localhost:8501).
+The app will be available at `http://localhost:8501` (or another port if 8501 is busy).
 
 ---
 
-## Usage
-1. Enter your app idea in the prompt box.
-2. Click “Run CoderBuddy 🚀”.
-3. Answer any clarifying questions and click Run again.
-4. When code artifacts are generated, use “Download Project ZIP 📦” to save the project.
+## 🎯 How to Use
 
-Notes:
-- The app hides raw code in the UI and shows a Preview if a README or HTML page is available.
-- The ZIP contains all generated files so you can run or iterate locally.
+1. **Describe Your App** - Enter your app idea in the prompt box
+2. **Run CoderBuddy** - Click "Run CoderBuddy 🚀" to start the AI workflow
+3. **Answer Questions** - Respond to any clarifying questions (now with clean, numbered interface)
+4. **Review Plan** - Check the generated plan and architecture
+5. **Download Project** - Use "Download Project ZIP 📦" to get your complete app
+
+### 💡 Pro Tips
+- Be specific about your app requirements for better results
+- Answer clarifying questions thoroughly
+- The generated ZIP contains all files needed to run your app locally
+- Use the "Clear Memory" button to start fresh conversations
 
 ---
 
-## Project structure
+## 📁 Project Structure
+
 ```
 Projects/04_CoderBuddy/
-├─ app.py                # Streamlit UI
-├─ requirements.txt
-├─ pyproject.toml
-├─ .gitignore
-├─ Readme.md
-└─ agents/
+├─ app.py                # Main Streamlit application
+├─ requirements.txt       # Python dependencies
+├─ pyproject.toml        # Project configuration
+├─ .env                  # Environment variables (API keys)
+├─ Readme.md            # This file
+├─ streamlit.log        # Application logs
+└─ agents/              # AI agent modules
    ├─ __init__.py
-   ├─ filewriter.py      # write & zip generated project
-   ├─ graph.py           # LangGraph graph definition
-   ├─ model.py           # LLM client setup
-   ├─ nodes.py           # Verifier / Requirements / Planner / Architect
-   └─ state.py           # Graph state definitions
+   ├─ filewriter.py     # Project file generation & ZIP creation
+   ├─ graph.py          # LangGraph workflow definition
+   ├─ model.py          # Groq LLM client configuration
+   ├─ nodes.py          # Individual agent nodes (Verifier, Planner, etc.)
+   └─ state.py          # Graph state management
 ```
 
 ---
 
-## Environment variables
-Create a `.env` file next to `app.py` with:
+## 🔧 Environment Configuration
+
+### Required Environment Variables
+Create a `.env` file with:
+```env
+GROQ_API_KEY=gsk_your_actual_groq_api_key_here
 ```
-GROQ_API_KEY=your_key_here
+
+### Getting a Groq API Key
+1. Visit [console.groq.com](https://console.groq.com)
+2. Sign up for a free account
+3. Generate an API key
+4. Copy the key and add it to your `.env` file
+
+---
+
+## 🛠️ Troubleshooting
+
+### Common Issues
+
+**❌ `ModuleNotFoundError: No module named 'openai'`**
+- **Solution**: Ensure you're using Python 3.10+ and install dependencies with the correct Python version
+- **Fix**: `python3.10 -m pip install -r requirements.txt`
+
+**❌ `GROQ_API_KEY not set`**
+- **Solution**: Create a `.env` file with your Groq API key
+- **Fix**: `echo "GROQ_API_KEY=your_key_here" > .env`
+
+**❌ Port already in use**
+- **Solution**: Streamlit will automatically use the next available port (8502, 8503, etc.)
+- **Fix**: Check the terminal output for the correct URL
+
+**❌ LangChain deprecation warnings**
+- **Solution**: These are just warnings and don't affect functionality
+- **Fix**: The app includes fallback memory handling for compatibility
+
+### Performance Optimization
+```bash
+# Install Watchdog for better file monitoring (macOS)
+xcode-select --install
+pip install watchdog
+```
+
+### Dependency Conflicts
+If you encounter dependency conflicts:
+```bash
+# Create a fresh virtual environment
+python3.10 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
 
 ---
 
-## Troubleshooting
-- If you see missing packages, run `pip install -r requirements.txt` again.
-- If the port is busy, Streamlit will start on a different port (e.g., 8502).
-- On macOS, for better file-change reloads, install Watchdog:
-  ```bash
-  xcode-select --install
-  pip install watchdog
-  ```
-- If you changed dependencies, restart Streamlit after reinstalling packages.
+## 🔄 Recent Updates
 
----
-
-## License
-MIT
+- **✅ Fixed UI Issues** - Improved question/answer interface with numbered questions
+- **✅ Enhanced Error Handling** - Better dependency management and environment setup
+- **✅ Cleaner Interface** - Organized answer fields and better visual hierarchy
+- **✅ Improved Documentation** - Updated setup instructions and troubleshooting guide
