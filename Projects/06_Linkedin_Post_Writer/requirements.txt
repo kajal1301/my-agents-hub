@@ -1,0 +1,28 @@
+# Stable LangChain ecosystem (tested & compatible)
+langchain==0.2.14
+langchain-core==0.2.13
+langchain-community==0.2.14
+langchain-openai==0.1.15
+langchain-text-splitters==0.2.2
+
+# Vector database
+faiss-cpu==1.8.0
+
+# Tokenization / utilities
+tiktoken==0.7.0
+
+# Optional: retries, YAML, and structured logging
+tenacity==8.2.3
+PyYAML==6.0.2
+
+# PDF support
+pypdf==4.3.0
+
+# For OpenAI API compatibility
+openai==1.41.0
+
+# Streamlit for web interface
+streamlit>=1.50.0
+
+# LangGraph for agent workflows
+langgraph>=1.0.0
