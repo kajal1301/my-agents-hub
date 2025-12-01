@@ -17,7 +17,8 @@ my-agents-hub/
     ├── 01_invoice_auditor/    # Invoice processing and auditing
     ├── 02_text_to_sql/        # Natural language to SQL conversion
     ├── 03_resume_matcher/     # Resume analysis and matching
-    └── 04_CoderBuddy/         # AI-powered app builder
+    ├── 04_CoderBuddy/         # AI-powered app builder
+    └── 06_Linkedin_Post_Writer/ # AI-powered LinkedIn content generator
 ```
 
 ## 🛠️ Projects
@@ -61,6 +62,20 @@ my-agents-hub/
 - One-click ZIP download
 - Live preview capabilities
 
+### 5. 💼 LinkedIn Post Writer (`06_Linkedin_Post_Writer`)
+**Status**: ✅ Complete  
+**Purpose**: AI-powered LinkedIn content generation and optimization  
+**Tech Stack**: Streamlit, LangGraph, LangChain, Groq API  
+**Features**:
+- Multi-agent workflow for content generation
+- Topic extraction and analysis
+- Key points generation
+- Draft post creation with customizable tone
+- Post optimization for maximum engagement
+- Customizable tone options (Professional, Formal, Inspirational, Educational, etc.)
+- Target audience selection
+- Ready-to-publish LinkedIn posts with hashtags and CTAs
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -99,6 +114,11 @@ Each project in the `Projects/` folder can be run independently:
 cd Projects/04_CoderBuddy
 pip install -r requirements.txt
 streamlit run app.py
+
+# Example: Run LinkedIn Post Writer
+cd Projects/06_Linkedin_Post_Writer
+pip install -r requirements.txt
+streamlit run app.py
 ```
 
 ## 🔧 Technology Stack
@@ -125,10 +145,14 @@ Core dependencies include:
 Most projects require API keys. Create a `.env` file in the project directory:
 
 ```env
-# Example for CoderBuddy
+# Example for projects using Groq API (CoderBuddy, LinkedIn Post Writer)
 GROQ_API_KEY=your_groq_api_key_here
+
+# Example for projects using OpenAI API
 OPENAI_API_KEY=your_openai_api_key_here
 ```
+
+**Note**: The LinkedIn Post Writer requires `GROQ_API_KEY` in the `.env` file located in `Projects/06_Linkedin_Post_Writer/`.
 
 ## 🤝 Contributing
 
