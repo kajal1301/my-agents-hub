@@ -18,9 +18,56 @@ except Exception:
             return {"history": [type("M", (), {"type": t, "content": c}) for t,c in self._hist]}
         def clear(self): self._hist.clear()
 
+def show_responsive_preview(html: str, height: int = 600):
+    # Renders an iframe that expands to its container; the HTML runs inside
+    container_css = """
+    <style>
+      .cb-frame { width: 100%; max-width: 1280px; margin: 8px auto 0; }
+      .cb-toolbar { display:flex; gap:8px; margin: 6px 0 8px; flex-wrap: wrap; }
+      .cb-toolbar button { padding:6px 10px; border:1px solid #e5e7eb; background:#fff; border-radius:8px; cursor:pointer; }
+      .cb-iframe-wrap { width:100%; border:1px solid #e5e7eb; border-radius:12px; overflow:hidden; }
+      .cb-iframe { width:100%; height: %dpx; border:0; }
+    </style>
+    """ % height
+    toolbar = """
+    <div class="cb-toolbar">
+      <button onclick="parent.postMessage({type:'cb-size',w:375,h:667},'*')">iPhone (375×667)</button>
+      <button onclick="parent.postMessage({type:'cb-size',w:768,h:1024},'*')">iPad (768×1024)</button>
+      <button onclick="parent.postMessage({type:'cb-size',w:1024,h:768},'*')">Laptop (1024×768)</button>
+      <button onclick="parent.postMessage({type:'cb-size',w:'100%',h:%d},'*')">Auto</button>
+    </div>
+    """ % height
+    wrapper = f"""
+      <div class="cb-frame">
+        {toolbar}
+        <div id="wrap" class="cb-iframe-wrap">
+          <iframe id="cb_iframe" class="cb-iframe"></iframe>
+        </div>
+      </div>
+      <script>
+        const html = `{html.replace('`','\\`')}`;
+        const ifr = document.getElementById('cb_iframe');
+        const blob = new Blob([html], {{ type: 'text/html' }});
+        const url = URL.createObjectURL(blob);
+        ifr.src = url;
+
+        window.addEventListener('message', (e)=>{
+            if(!e.data || e.data.type !== 'cb-size') return;
+            const w = e.data.w, h = e.data.h;
+            const wrap = document.getElementById('wrap');
+            if (typeof w === 'string') wrap.style.width = w; else wrap.style.width = w + 'px';
+            if (typeof h === 'string') ifr.style.height = h; else ifr.style.height = h + 'px';
+        });
+      </script>
+    """
+    components.html(container_css + wrapper, height=height + 90, scrolling=False)
+
+
 from agents.graph import build_graph
 from agents.state import GraphState
 from agents.filewriter import write_project, memory_safe_get
+from agents.preview import build_inlined_preview_html
+import streamlit.components.v1 as components
 
 st.set_page_config(page_title="CoderBuddy", layout="wide")
 st.title("🧑‍💻 CoderBuddy — Agentic App Builder")
@@ -49,8 +96,20 @@ user_prompt = st.text_area("Your prompt", height=140)
 colA, colB = st.columns([1,1])
 with colA:
     run_btn = st.button("Run CoderBuddy 🚀")
+# ZIP generation (unchanged)
+colA, colB = st.columns([1,1])
 with colB:
-    gen_btn = st.button("Generate Project ZIP 📦", disabled=True, key="gen_zip_disabled")
+    if st.button("Generate Project ZIP 📦", type="secondary"):
+        artifacts = (last or {}).get("code_artifacts") or []
+        if not artifacts:
+            # fallback: minimal files if model produced none
+            artifacts = [
+                {"path":"index.html","content":"<!doctype html><html><head><meta charset='utf-8'><title>Preview</title></head><body><h2>Empty project</h2></body></html>"}
+            ]
+        zip_path = write_project(artifacts, base_dir="generated_project")
+        with open(zip_path, "rb") as f:
+            st.download_button("⬇️ Download ZIP", f, file_name="coderbuddy_project.zip", mime="application/zip")
+
 
 if run_btn and user_prompt.strip():
     st.session_state.memory.save_context({"human": user_prompt}, {"ai": "Processing..."})
@@ -78,10 +137,16 @@ if last:
             if submitted:
                 st.session_state.answers.update({k:v for k,v in new_answers.items() if v})
                 st.success("Answers saved. Click Run again to refine.")
+    # Plan / Architecture preview
+    if last.get("plan") or last.get("architecture"):
+        st.subheader("3️⃣ Live Preview")
+        artifacts = (last or {}).get("code_artifacts") or []
+        html = build_inlined_preview_html(artifacts)
+        show_responsive_preview(html, height=640)
 
-    if last.get("plan"):
-        st.subheader("3️⃣ Plan")
-        st.json(last["plan"])
+    # if last.get("plan"):
+    #     st.subheader("3️⃣ Plan")
+    #     st.json(last["plan"])
 
     if last.get("architecture"):
         st.subheader("4️⃣ Architecture")

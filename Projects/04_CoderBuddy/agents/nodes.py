@@ -173,14 +173,11 @@ Return STRICT JSON: {"artifacts":[{"path":"...", "content":"..."}]}
     except Exception:
         # fallback minimal app
         artifacts = [
-            {"path":"app_package/__init__.py","content":""},
-            {"path":"app.py","content":"""import streamlit as st
-st.set_page_config(page_title="CoderBuddy App")
-st.title("Hello from CoderBuddy")
-st.write("This is a minimal generated app.")"""},
-            {"path":"README.md","content":"# Generated app\\nRun: `pip install -r requirements.txt && streamlit run app.py`"},
-            {"path":"requirements.txt","content":"streamlit>=1.37\\n"},
+        {"path":"index.html","content":"<!doctype html><html><head><meta charset='utf-8'><title>CoderBuddy Preview</title><link rel='stylesheet' href='./style.css'></head><body><div id='app'><h1>CoderBuddy Preview</h1><p>This is a minimal generated front-end.</p><div class='card'><label>Prompt</label><input id='p' placeholder='Describe your app' /><button onclick='run()'>Run</button></div><pre id='out'></pre></div><script src='./index.js'></script></body></html>"},
+        {"path":"style.css","content":"html,body{margin:0;font:14px system-ui, -apple-system, Segoe UI, Roboto} #app{padding:16px} .card{display:flex;gap:8px;align-items:center;margin:12px 0} input{flex:1;padding:8px;border:1px solid #ddd;border-radius:8px} button{padding:8px 12px;border:0;border-radius:8px;background:#4f46e5;color:#fff;cursor:pointer} pre{background:#0b1021;color:#cde; padding:12px; border-radius:8px; overflow:auto}"},
+        {"path":"index.js","content":"function run(){const v=document.getElementById('p').value||'(no prompt)';document.getElementById('out').textContent='Pretend we planned, architected, and coded: '+v;}"}
         ]
+
     state["code_artifacts"] = artifacts
     state["status"] = "Code generated"
     return state
