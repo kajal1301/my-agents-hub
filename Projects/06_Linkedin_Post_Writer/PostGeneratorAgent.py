@@ -1,4 +1,5 @@
-from keys import llm
+from dotenv import load_dotenv
+load_dotenv()
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
 from typing import Annotated, Literal
@@ -7,9 +8,26 @@ import operator
 from langgraph.graph import StateGraph
 from langgraph.constants import START, END
 from langchain_core.messages import HumanMessage
-
+from langchain_openai import ChatOpenAI
 import json
 import sys
+import os
+
+# Initialize Groq LLM using LangChain ChatOpenAI with Groq base URL
+# Groq is OpenAI-compatible, so we can use ChatOpenAI with Groq's base URL
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+if not GROQ_API_KEY:
+    raise RuntimeError("GROQ_API_KEY not found in .env file. Please add GROQ_API_KEY to your .env file.")
+
+# Initialize the LLM with Groq
+# Using llama-3.1-70b-versatile as default, but can be changed to other Groq models
+llm = ChatOpenAI(
+    model="openai/gpt-oss-120b",
+    api_key=GROQ_API_KEY,
+    base_url="https://api.groq.com/openai/v1",
+    temperature=0.7
+)
+
 
 # Linkedin Post Generator Agent State
 class PostGeneratorState(TypedDict):

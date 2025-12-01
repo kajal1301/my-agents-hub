@@ -1,9 +1,9 @@
 # Stable LangChain ecosystem (tested & compatible)
-langchain==0.2.14
-langchain-core==0.2.13
-langchain-community==0.2.14
-langchain-openai==0.1.15
-langchain-text-splitters==0.2.2
+langchain>=0.2.15,<0.3.0
+langchain-core>=0.2.32,<0.3.0
+langchain-community>=0.2.14,<0.3.0
+langchain-openai>=0.1.15,<0.2.0
+langchain-text-splitters>=0.2.2,<0.3.0
 
 # Vector database
 faiss-cpu==1.8.0
@@ -26,3 +26,6 @@ streamlit>=1.50.0
 
 # LangGraph for agent workflows
 langgraph>=1.0.0
+
+# Environment variables
+python-dotenv>=1.0.0
